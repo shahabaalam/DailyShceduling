@@ -90,18 +90,44 @@
     <button class="fab" id="add-task" type="button" aria-label="Add task">+</button>
 
     <aside class="sheet hidden mobile-menu-sheet" id="mobile-menu" role="dialog" aria-modal="true"
-      aria-labelledby="mobile-menu-title">
-      <header class="sheet-header">
-        <h2 id="mobile-menu-title">Menu</h2>
-        <button class="text-btn" id="close-mobile-menu" type="button" aria-label="Close menu">Close</button>
+      aria-labelledby="mobile-menu-name">
+      <header class="mobile-menu-header">
+        <img class="mobile-menu-avatar" id="mobile-menu-avatar" src="/assets/icons/logo.png" alt="User avatar" />
+        <div class="mobile-menu-profile">
+          <p class="mobile-menu-name" id="mobile-menu-name">Welcome</p>
+          <p class="mobile-menu-email" id="mobile-menu-email"></p>
+        </div>
+        <button class="icon-btn mobile-menu-close" id="close-mobile-menu" type="button"
+          aria-label="Close menu">×</button>
       </header>
-      <p class="mobile-user" id="mobile-menu-user"></p>
-      <div class="mobile-menu-actions">
-        <button class="mobile-menu-action" id="menu-focus" type="button">Focus mode</button>
-        <button class="mobile-menu-action" id="menu-calendar" type="button">Calendar</button>
-        <button class="mobile-menu-action" id="menu-inbox" type="button">Inbox</button>
-        <button class="mobile-menu-action" id="menu-settings" type="button">Settings</button>
-        <button class="mobile-menu-action danger" id="menu-signout" type="button">Sign out</button>
+      <nav class="mobile-menu-nav">
+        <button class="mobile-menu-item" id="menu-dashboard" type="button">
+          <span class="mobile-menu-icon">⌂</span>
+          <span>Dashboard</span>
+        </button>
+        <button class="mobile-menu-item" id="menu-focus" type="button">
+          <span class="mobile-menu-icon">✦</span>
+          <span>Focus mode</span>
+        </button>
+        <button class="mobile-menu-item" id="menu-calendar" type="button">
+          <span class="mobile-menu-icon">☷</span>
+          <span>Calendar</span>
+        </button>
+        <button class="mobile-menu-item" id="menu-inbox" type="button">
+          <span class="mobile-menu-icon">⌂</span>
+          <span>Inbox</span>
+        </button>
+      </nav>
+      <div class="mobile-menu-divider"></div>
+      <div class="mobile-menu-footer">
+        <button class="mobile-menu-item" id="menu-settings" type="button">
+          <span class="mobile-menu-icon">⚙</span>
+          <span>Settings</span>
+        </button>
+        <button class="mobile-menu-item danger" id="menu-signout" type="button">
+          <span class="mobile-menu-icon">↪</span>
+          <span>Sign out</span>
+        </button>
       </div>
     </aside>
 

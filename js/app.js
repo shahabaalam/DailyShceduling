@@ -62,7 +62,10 @@ const ui = {
   closeCalendar: document.getElementById("close-calendar"),
   mobileMenu: document.getElementById("mobile-menu"),
   closeMobileMenu: document.getElementById("close-mobile-menu"),
-  mobileMenuUser: document.getElementById("mobile-menu-user"),
+  mobileMenuAvatar: document.getElementById("mobile-menu-avatar"),
+  mobileMenuName: document.getElementById("mobile-menu-name"),
+  mobileMenuEmail: document.getElementById("mobile-menu-email"),
+  menuDashboard: document.getElementById("menu-dashboard"),
   menuFocus: document.getElementById("menu-focus"),
   menuCalendar: document.getElementById("menu-calendar"),
   menuInbox: document.getElementById("menu-inbox"),
@@ -405,6 +408,7 @@ function wireEvents() {
   ui.addTask.addEventListener("click", () => openTaskModal());
   ui.btnMobileMenu.addEventListener("click", () => toggleLayer(ui.mobileMenu));
   ui.closeMobileMenu.addEventListener("click", closeLayers);
+  ui.menuDashboard.addEventListener("click", () => closeLayers());
   ui.menuFocus.addEventListener("click", () => {
     closeLayers();
     ui.btnFocus.click();
@@ -821,14 +825,22 @@ function renderAuthState() {
   if (isAuthenticated && state.authUser) {
     ui.btnAuth.textContent = "Sign out";
     ui.authUser.textContent = state.authUser.email || state.authUser.name || "";
-    ui.mobileMenuUser.textContent = state.authUser.email || state.authUser.name || "";
+    ui.mobileMenuName.textContent = state.authUser.name || state.authUser.email || "Signed in";
+    ui.mobileMenuEmail.textContent = state.authUser.email || "";
+    ui.mobileMenuAvatar.src = state.authUser.picture || "/assets/icons/logo.png";
+    ui.mobileMenuAvatar.alt = state.authUser.name
+      ? `${state.authUser.name} avatar`
+      : "User avatar";
     ui.desktopUser.textContent = state.authUser.email || state.authUser.name || "";
     ui.menuSignout.disabled = false;
     ui.sideSignout.disabled = false;
   } else {
     ui.btnAuth.textContent = "Sign in with Google";
     ui.authUser.textContent = "";
-    ui.mobileMenuUser.textContent = "";
+    ui.mobileMenuName.textContent = "Sign in to continue";
+    ui.mobileMenuEmail.textContent = "";
+    ui.mobileMenuAvatar.src = "/assets/icons/logo.png";
+    ui.mobileMenuAvatar.alt = "App logo";
     ui.desktopUser.textContent = "";
     ui.menuSignout.disabled = true;
     ui.sideSignout.disabled = true;
