@@ -912,7 +912,15 @@ function renderHeader() {
   ui.taskCounter.textContent = `${completedCount} of ${totalCount} complete`;
   ui.progressFill.style.width = `${percentage}%`;
   ui.viewLabel.textContent = state.focusMode ? "Focus mode: incomplete only" : "All tasks";
-  ui.menuFocus.textContent = state.focusMode ? "Disable focus mode" : "Enable focus mode";
+  const menuFocusLabel = ui.menuFocus.querySelector("span:last-child");
+  if (menuFocusLabel) {
+    menuFocusLabel.textContent = state.focusMode ? "Disable focus mode" : "Enable focus mode";
+  }
+  const menuFocusIcon = document.getElementById("menu-focus-icon");
+  if (menuFocusIcon) {
+    menuFocusIcon.classList.toggle("is-enabled", state.focusMode);
+    menuFocusIcon.classList.toggle("is-disabled", !state.focusMode);
+  }
   ui.sideFocus.querySelector(".desktop-action-label").textContent = state.focusMode
     ? "Disable focus mode"
     : "Enable focus mode";

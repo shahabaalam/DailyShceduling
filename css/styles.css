@@ -1060,6 +1060,18 @@ h1 .accent {
   color: var(--muted);
 }
 
+#menu-focus-icon.is-enabled {
+  background: #46b36a;
+  border-color: #46b36a;
+  color: #fff;
+}
+
+#menu-focus-icon.is-disabled {
+  background: #e05a5a;
+  border-color: #e05a5a;
+  color: #fff;
+}
+
 .mobile-menu-divider {
   height: 1px;
   background: var(--line);
@@ -1231,11 +1243,15 @@ h1 .accent {
   font-size: 0.85rem;
   font-weight: 600;
   z-index: 70;
-  transition: transform 180ms ease;
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 180ms ease, opacity 180ms ease;
 }
 
 .toast.show {
   transform: translateX(-50%) translateY(0);
+  opacity: 1;
+  pointer-events: auto;
 }
 
 .hidden {
