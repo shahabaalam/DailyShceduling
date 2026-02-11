@@ -51,7 +51,6 @@ const ui = {
   emptyState: document.getElementById("empty-state"),
   addTask: document.getElementById("add-task"),
   btnFocus: document.getElementById("btn-focus"),
-  btnCalendar: document.getElementById("btn-calendar"),
   btnInbox: document.getElementById("btn-inbox"),
   btnSettings: document.getElementById("btn-settings"),
   btnMobileMenu: document.getElementById("btn-mobile-menu"),
@@ -67,7 +66,6 @@ const ui = {
   mobileMenuEmail: document.getElementById("mobile-menu-email"),
   menuDashboard: document.getElementById("menu-dashboard"),
   menuFocus: document.getElementById("menu-focus"),
-  menuCalendar: document.getElementById("menu-calendar"),
   menuInbox: document.getElementById("menu-inbox"),
   menuSettings: document.getElementById("menu-settings"),
   menuSignout: document.getElementById("menu-signout"),
@@ -75,7 +73,6 @@ const ui = {
   sideToggle: document.getElementById("side-toggle"),
   desktopUser: document.getElementById("desktop-user"),
   sideFocus: document.getElementById("side-focus"),
-  sideCalendar: document.getElementById("side-calendar"),
   sideInbox: document.getElementById("side-inbox"),
   sideSettings: document.getElementById("side-settings"),
   sideSignout: document.getElementById("side-signout"),
@@ -413,10 +410,6 @@ function wireEvents() {
     closeLayers();
     ui.btnFocus.click();
   });
-  ui.menuCalendar.addEventListener("click", () => {
-    closeLayers();
-    ui.btnCalendar.click();
-  });
   ui.menuInbox.addEventListener("click", () => {
     closeLayers();
     openLayer(ui.inboxSheet);
@@ -435,7 +428,6 @@ function wireEvents() {
     renderAll();
   });
   ui.sideFocus.addEventListener("click", () => ui.btnFocus.click());
-  ui.sideCalendar.addEventListener("click", () => ui.btnCalendar.click());
   ui.sideInbox.addEventListener("click", () => {
     if (ui.inboxSheet.classList.contains("hidden")) {
       openLayer(ui.inboxSheet);
@@ -470,14 +462,13 @@ function wireEvents() {
     showToast(state.focusMode ? "Focus mode enabled" : "Focus mode disabled");
   });
 
-  ui.btnCalendar.addEventListener("click", () => {
+  ui.dateCaption.addEventListener("click", () => {
     const shouldOpen = ui.calendarPopover.classList.contains("hidden");
     closeCalendarPopover();
     if (shouldOpen) {
       renderCalendarDays();
       ui.calendarPopover.classList.remove("hidden");
-      ui.btnCalendar.classList.add("active");
-      ui.sideCalendar.classList.add("active");
+      ui.dateCaption.classList.add("active");
     }
   });
 
@@ -565,10 +556,7 @@ function wireEvents() {
   document.addEventListener("click", (event) => {
     if (ui.calendarPopover.classList.contains("hidden")) return;
     const insidePopover = ui.calendarPopover.contains(event.target);
-    const onButton =
-      ui.btnCalendar.contains(event.target) ||
-      ui.sideCalendar.contains(event.target) ||
-      ui.menuCalendar.contains(event.target);
+    const onButton = ui.dateCaption.contains(event.target);
     if (!insidePopover && !onButton) closeCalendarPopover();
   });
 }
@@ -853,12 +841,10 @@ function renderAuthState() {
   const locked = !isAuthenticated;
   ui.addTask.disabled = locked;
   ui.btnFocus.disabled = locked;
-  ui.btnCalendar.disabled = locked;
   ui.btnInbox.disabled = locked;
   ui.btnSettings.disabled = locked;
   ui.btnMobileMenu.disabled = locked;
   ui.sideFocus.disabled = locked;
-  ui.sideCalendar.disabled = locked;
   ui.sideInbox.disabled = locked;
   ui.sideSettings.disabled = locked;
 }
@@ -932,7 +918,7 @@ function renderHeader() {
   ui.btnSettings.classList.toggle("active", !ui.settingsModal.classList.contains("hidden"));
   ui.sideSettings.classList.toggle("active", !ui.settingsModal.classList.contains("hidden"));
   ui.btnMobileMenu.classList.toggle("active", !ui.mobileMenu.classList.contains("hidden"));
-  ui.sideCalendar.classList.toggle("active", !ui.calendarPopover.classList.contains("hidden"));
+  ui.dateCaption.classList.toggle("active", !ui.calendarPopover.classList.contains("hidden"));
 }
 
 function renderQuickTasks() {
@@ -1197,8 +1183,7 @@ function closeLayers() {
 
 function closeCalendarPopover() {
   ui.calendarPopover.classList.add("hidden");
-  ui.btnCalendar.classList.remove("active");
-  ui.sideCalendar.classList.remove("active");
+  ui.dateCaption.classList.remove("active");
 }
 
 function persistAndRender() {

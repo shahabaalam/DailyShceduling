@@ -241,6 +241,25 @@ h1 .accent {
   font-weight: 600;
 }
 
+.date-caption-btn {
+  background: none;
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.date-caption-btn.active,
+.date-caption-btn:hover {
+  color: var(--text);
+}
+
+.date-caption-btn:focus-visible {
+  outline: 2px solid var(--coral);
+  outline-offset: 2px;
+  border-radius: 0.4rem;
+}
+
 .auth-row {
   display: none;
 }

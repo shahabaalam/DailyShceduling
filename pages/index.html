@@ -27,10 +27,6 @@
           <span class="desktop-action-icon">✦</span>
           <span class="desktop-action-label">Enable focus mode</span>
         </button>
-        <button class="desktop-action" id="side-calendar" type="button" title="Calendar">
-          <span class="desktop-action-icon">☷</span>
-          <span class="desktop-action-label">Calendar</span>
-        </button>
         <button class="desktop-action" id="side-inbox" type="button" title="Inbox">
           <span class="desktop-action-icon">⌂</span>
           <span class="desktop-action-label">Inbox</span>
@@ -52,7 +48,8 @@
       <div class="title-row">
         <div>
           <h1><span id="month-name">November</span> <span id="month-year" class="accent">2024</span></h1>
-          <p class="date-caption" id="date-caption">Monday, November 18</p>
+          <button class="date-caption date-caption-btn" id="date-caption" type="button"
+            aria-label="Open calendar">Monday, November 18</button>
           <div class="auth-row">
             <button class="auth-btn" id="btn-auth" type="button">Sign in with Google</button>
             <span class="auth-user" id="auth-user"></span>
@@ -62,8 +59,6 @@
         <nav class="top-actions" aria-label="Top actions">
           <button class="top-btn" id="btn-focus" type="button" aria-label="Toggle focus mode"
             title="Focus mode">✦</button>
-          <button class="top-btn" id="btn-calendar" type="button" aria-label="Open calendar panel"
-            title="Calendar">☷</button>
           <button class="top-btn" id="btn-inbox" type="button" aria-label="Open inbox panel" title="Inbox">⌂</button>
           <button class="top-btn" id="btn-settings" type="button" aria-label="Open settings panel"
             title="Settings">⚙</button>
@@ -110,10 +105,6 @@
         <button class="mobile-menu-item" id="menu-focus" type="button">
           <span class="mobile-menu-icon" id="menu-focus-icon">✦</span>
           <span>Focus mode</span>
-        </button>
-        <button class="mobile-menu-item" id="menu-calendar" type="button">
-          <span class="mobile-menu-icon">☷</span>
-          <span>Calendar</span>
         </button>
         <button class="mobile-menu-item" id="menu-inbox" type="button">
           <span class="mobile-menu-icon">⌂</span>
