@@ -1,8 +1,9 @@
 import os
 import hmac
 import hashlib
+import base64
+import json
 import secrets
-import threading
 import time
 from urllib.error import HTTPError, URLError
 from urllib.parse import urlencode
@@ -38,8 +39,6 @@ GOOGLE_USERINFO_URL = "https://openidconnect.googleapis.com/v1/userinfo"
 SESSION_COOKIE = "ds_session"
 OAUTH_STATE_COOKIE = "ds_oauth_state"
 SESSION_TTL_SECONDS = 60 * 60 * 24 * 7
-_SESSIONS: dict[str, dict] = {}
-_SESSIONS_LOCK = threading.Lock()
 
 app.add_middleware(
     CORSMiddleware,
@@ -62,14 +61,6 @@ def get_current_user(request: Request) -> dict:
 
 def _now_ts() -> int:
     return int(time.time())
-
-
-def _cleanup_expired_sessions() -> None:
-    now = _now_ts()
-    with _SESSIONS_LOCK:
-        expired = [sid for sid, entry in _SESSIONS.items() if entry["expires_at"] <= now]
-        for sid in expired:
-            _SESSIONS.pop(sid, None)
 
 
 def _sign_value(raw_value: str) -> str:
@@ -95,33 +86,27 @@ def _verify_signed_value(signed_value: str | None) -> str | None:
     return raw_value
 
 
-def _create_session(user: dict) -> str:
-    _cleanup_expired_sessions()
-    session_id = secrets.token_urlsafe(48)
-    with _SESSIONS_LOCK:
-        _SESSIONS[session_id] = {"user": user, "expires_at": _now_ts() + SESSION_TTL_SECONDS}
-    return session_id
+def _encode_session(user: dict, expires_at: int) -> str:
+    payload = {"user": user, "exp": expires_at}
+    encoded = base64.urlsafe_b64encode(json.dumps(payload).encode("utf-8")).decode("utf-8")
+    return _sign_value(encoded)
 
 
-def _delete_session(request: Request) -> None:
-    session_id = _verify_signed_value(request.cookies.get(SESSION_COOKIE))
-    if not session_id:
-        return
-    with _SESSIONS_LOCK:
-        _SESSIONS.pop(session_id, None)
+def _decode_session(token: str | None) -> dict | None:
+    raw = _verify_signed_value(token)
+    if not raw:
+        return None
+    try:
+        payload = json.loads(base64.urlsafe_b64decode(raw.encode("utf-8")).decode("utf-8"))
+    except Exception:
+        return None
+    if payload.get("exp", 0) < _now_ts():
+        return None
+    return payload.get("user")
 
 
 def _get_user_from_request(request: Request) -> dict | None:
-    _cleanup_expired_sessions()
-    session_id = _verify_signed_value(request.cookies.get(SESSION_COOKIE))
-    if not session_id:
-        return None
-    with _SESSIONS_LOCK:
-        entry = _SESSIONS.get(session_id)
-        if not entry:
-            return None
-        entry["expires_at"] = _now_ts() + SESSION_TTL_SECONDS
-        return entry["user"]
+    return _decode_session(request.cookies.get(SESSION_COOKIE))
 
 
 def _is_https(request: Request) -> bool:
@@ -268,11 +253,11 @@ async def auth_google_callback(request: Request):
         "name": userinfo.get("name"),
         "picture": userinfo.get("picture"),
     }
-    session_id = _create_session(user)
     response = RedirectResponse(url="/", status_code=302)
+    session_token = _encode_session(user, _now_ts() + SESSION_TTL_SECONDS)
     response.set_cookie(
         key=SESSION_COOKIE,
-        value=_sign_value(session_id),
+        value=session_token,
         max_age=SESSION_TTL_SECONDS,
         httponly=True,
         samesite="lax",
@@ -292,7 +277,6 @@ def auth_me(request: Request):
 
 @api.post("/auth/logout")
 def auth_logout(request: Request):
-    _delete_session(request)
     response = JSONResponse({"ok": True})
     response.delete_cookie(SESSION_COOKIE)
     response.delete_cookie(OAUTH_STATE_COOKIE)

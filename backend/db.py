@@ -1,3 +1,4 @@
+import os
 from pathlib import Path
 
 from dotenv import load_dotenv
@@ -7,8 +8,14 @@ from sqlalchemy.orm import declarative_base, sessionmaker
 load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent
-DB_PATH = BASE_DIR / "scheduler.db"
-SQLALCHEMY_DATABASE_URL = f"sqlite:///{DB_PATH}"
+ENV_DB_PATH = os.getenv("DATABASE_PATH")
+if ENV_DB_PATH:
+    SQLALCHEMY_DATABASE_URL = f"sqlite:///{ENV_DB_PATH}"
+elif os.getenv("VERCEL"):
+    SQLALCHEMY_DATABASE_URL = "sqlite:////tmp/scheduler.db"
+else:
+    DB_PATH = BASE_DIR / "scheduler.db"
+    SQLALCHEMY_DATABASE_URL = f"sqlite:///{DB_PATH}"
 
 engine = create_engine(
     SQLALCHEMY_DATABASE_URL,
