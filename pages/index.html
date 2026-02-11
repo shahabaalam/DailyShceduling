@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Daily Scheduling</title>
+  <link rel="stylesheet" href="/css/styles.css" />
+</head>
+
+<body>
+  <main class="app" role="application" aria-label="Daily scheduling app">
+    <aside class="desktop-sidebar" id="desktop-sidebar" aria-label="Desktop menu">
+      <div class="desktop-top">
+        <img class="desktop-logo" src="/assets/icons/logo.png" alt="Daily Scheduling logo" />
+        <button class="desktop-collapse-btn" id="side-toggle" type="button" aria-label="Toggle sidebar"
+          title="Toggle sidebar">
+          ⟨
+        </button>
+      </div>
+      <p class="desktop-eyebrow">Daily Scheduling</p>
+      <p class="desktop-user" id="desktop-user"></p>
+      <div class="desktop-actions">
+        <button class="desktop-action" id="side-focus" type="button" title="Focus mode">
+          <span class="desktop-action-icon">✦</span>
+          <span class="desktop-action-label">Enable focus mode</span>
+        </button>
+        <button class="desktop-action" id="side-calendar" type="button" title="Calendar">
+          <span class="desktop-action-icon">☷</span>
+          <span class="desktop-action-label">Calendar</span>
+        </button>
+        <button class="desktop-action" id="side-inbox" type="button" title="Inbox">
+          <span class="desktop-action-icon">⌂</span>
+          <span class="desktop-action-label">Inbox</span>
+        </button>
+        <button class="desktop-action" id="side-settings" type="button" title="Settings">
+          <span class="desktop-action-icon">⚙</span>
+          <span class="desktop-action-label">Settings</span>
+        </button>
+      </div>
+      <div class="desktop-footer">
+        <button class="desktop-action danger" id="side-signout" type="button" title="Sign out">
+          <span class="desktop-action-icon">↪</span>
+          <span class="desktop-action-label">Sign out</span>
+        </button>
+      </div>
+    </aside>
+
+    <section class="month-strip">
+      <div class="title-row">
+        <div>
+          <h1><span id="month-name">November</span> <span id="month-year" class="accent">2024</span></h1>
+          <p class="date-caption" id="date-caption">Monday, November 18</p>
+          <div class="auth-row">
+            <button class="auth-btn" id="btn-auth" type="button">Sign in with Google</button>
+            <span class="auth-user" id="auth-user"></span>
+          </div>
+        </div>
+        <button class="mobile-menu-btn" id="btn-mobile-menu" type="button" aria-label="Open menu">☰</button>
+        <nav class="top-actions" aria-label="Top actions">
+          <button class="top-btn" id="btn-focus" type="button" aria-label="Toggle focus mode"
+            title="Focus mode">✦</button>
+          <button class="top-btn" id="btn-calendar" type="button" aria-label="Open calendar panel"
+            title="Calendar">☷</button>
+          <button class="top-btn" id="btn-inbox" type="button" aria-label="Open inbox panel" title="Inbox">⌂</button>
+          <button class="top-btn" id="btn-settings" type="button" aria-label="Open settings panel"
+            title="Settings">⚙</button>
+        </nav>
+      </div>
+      <div class="week-row" id="week-row" aria-label="Week days"></div>
+    </section>
+
+    <section class="board">
+      <header class="board-header">
+        <div class="header-info">
+          <p id="task-counter">0 of 0 complete</p>
+          <div class="progress-bar-bg">
+            <div class="progress-bar-fill" id="progress-fill" style="width: 0%"></div>
+          </div>
+        </div>
+        <p id="view-label">All tasks</p>
+      </header>
+
+      <div class="quick-list" id="quick-list" aria-label="Pinned tasks"></div>
+
+      <div class="event-list" id="event-list" aria-label="Daily timeline"></div>
+      <p class="empty-state" id="empty-state" hidden>No tasks yet. Tap + to add one.</p>
+    </section>
+
+    <button class="fab" id="add-task" type="button" aria-label="Add task">+</button>
+
+    <aside class="sheet hidden mobile-menu-sheet" id="mobile-menu" role="dialog" aria-modal="true"
+      aria-labelledby="mobile-menu-title">
+      <header class="sheet-header">
+        <h2 id="mobile-menu-title">Menu</h2>
+        <button class="text-btn" id="close-mobile-menu" type="button" aria-label="Close menu">Close</button>
+      </header>
+      <p class="mobile-user" id="mobile-menu-user"></p>
+      <div class="mobile-menu-actions">
+        <button class="mobile-menu-action" id="menu-focus" type="button">Focus mode</button>
+        <button class="mobile-menu-action" id="menu-calendar" type="button">Calendar</button>
+        <button class="mobile-menu-action" id="menu-inbox" type="button">Inbox</button>
+        <button class="mobile-menu-action" id="menu-settings" type="button">Settings</button>
+        <button class="mobile-menu-action danger" id="menu-signout" type="button">Sign out</button>
+      </div>
+    </aside>
+
+    <section class="calendar-popover hidden" id="calendar-popover" aria-label="Calendar panel">
+      <header>
+        <h2>Jump To Day</h2>
+        <button class="text-btn" id="close-calendar" type="button">Close</button>
+      </header>
+      <div class="calendar-jump">
+        <label for="jump-date">Pick date</label>
+        <input id="jump-date" type="date" />
+        <button class="text-btn" id="jump-today" type="button">Today</button>
+      </div>
+      <div class="calendar-days" id="calendar-days"></div>
+    </section>
+
+    <aside class="sheet hidden" id="inbox-sheet" role="dialog" aria-modal="true" aria-labelledby="inbox-title">
+      <header class="sheet-header">
+        <h2 id="inbox-title">Inbox</h2>
+        <button class="text-btn" id="close-inbox" type="button" aria-label="Close inbox">Close</button>
+      </header>
+      <div class="sheet-content" id="inbox-content"></div>
+    </aside>
+
+    <section class="modal hidden" id="settings-modal" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+      <header class="modal-header">
+        <h2 id="settings-title">Settings</h2>
+        <button class="icon-btn" id="close-settings" type="button" aria-label="Close settings">×</button>
+      </header>
+      <label class="toggle-row" for="compact-toggle">
+        <span>Compact timeline</span>
+        <input id="compact-toggle" type="checkbox" />
+      </label>
+      <label class="toggle-row" for="dark-mode-toggle">
+        <span>Dark Mode</span>
+        <input id="dark-mode-toggle" type="checkbox" />
+      </label>
+      <div class="modal-actions">
+        <button class="secondary" id="clear-completed" type="button">Clear Completed (Day)</button>
+        <button class="danger" id="reset-app" type="button">Reset My Data</button>
+      </div>
+    </section>
+
+    <section class="modal hidden" id="task-modal" role="dialog" aria-modal="true" aria-labelledby="task-modal-title">
+      <form id="task-form" novalidate>
+        <header class="modal-header">
+          <h2 id="task-modal-title">Add Task</h2>
+          <button class="icon-btn" id="close-task" type="button" aria-label="Close task form">×</button>
+        </header>
+
+        <input id="task-id" type="hidden" />
+
+        <label class="field" for="task-name">
+          <span>Task Title</span>
+          <input id="task-name" type="text" maxlength="70" required placeholder="Enter task title" />
+        </label>
+
+        <div class="field-grid">
+          <label class="field" for="task-date">
+            <span>Date</span>
+            <input id="task-date" type="date" required />
+          </label>
+          <label class="field" for="task-icon">
+            <span>Icon</span>
+            <select id="task-icon"></select>
+          </label>
+        </div>
+
+        <div class="field-grid">
+          <label class="field" for="task-start">
+            <span>Start</span>
+            <input id="task-start" type="time" required />
+          </label>
+          <label class="field" for="task-end">
+            <span>End</span>
+            <input id="task-end" type="time" required />
+          </label>
+        </div>
+
+        <label class="field" for="task-color">
+          <span>Color</span>
+          <select id="task-color"></select>
+        </label>
+
+        <label class="field" for="task-notes">
+          <span>Notes (Optional)</span>
+          <textarea id="task-notes" rows="3" maxlength="160" placeholder="Add notes"></textarea>
+        </label>
+
+        <p class="form-error" id="task-form-error"></p>
+
+        <div class="modal-actions">
+          <button class="danger hidden" id="delete-task" type="button">Delete</button>
+          <button class="secondary" id="cancel-task" type="button">Cancel</button>
+          <button class="primary" id="save-task" type="submit">Save</button>
+        </div>
+      </form>
+    </section>
+  </main>
+
+  <div class="backdrop hidden" id="backdrop"></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="/js/app.js"></script>
+</body>
+
+</html>

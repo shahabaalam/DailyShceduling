@@ -1,0 +1,129 @@
+:root {
+  --bg: #f2f1f4;
+  --panel: #ffffff;
+  --text: #16171d;
+  --muted: #737783;
+  --coral: #e8a0a7;
+  --border: #e4e6ea;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  color: var(--text);
+  background:
+    radial-gradient(56rem 30rem at -10% -25%, #ffffff 0%, transparent 55%),
+    radial-gradient(45rem 28rem at 120% 0%, #f9e6e9 0%, transparent 58%),
+    var(--bg);
+  font-family: "Avenir Next", "SF Pro Display", "Trebuchet MS", sans-serif;
+}
+
+.login-page {
+  min-height: 100dvh;
+  display: grid;
+  place-items: center;
+  padding: 1.25rem;
+}
+
+.login-card {
+  width: min(100%, 32rem);
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 1.4rem;
+  box-shadow: 0 14px 30px rgba(22, 23, 29, 0.08);
+  padding: 1.35rem 1.15rem 1.4rem;
+  text-align: center;
+}
+
+.app-logo {
+  width: 5.4rem;
+  height: 5.4rem;
+  object-fit: contain;
+  border-radius: 1rem;
+  background: #fff;
+  border: 1px solid var(--border);
+  margin-bottom: 0.65rem;
+}
+
+.eyebrow {
+  margin: 0;
+  font-size: 0.75rem;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+h1 {
+  margin: 0.4rem 0 0;
+  font-size: clamp(1.7rem, 4.7vw, 2.45rem);
+  line-height: 1.06;
+  letter-spacing: -0.03em;
+}
+
+.subtitle {
+  margin: 0.7rem auto 1.1rem;
+  color: var(--muted);
+  font-size: 0.95rem;
+  max-width: 26rem;
+  line-height: 1.5;
+}
+
+.google-btn {
+  width: 100%;
+  border: 1px solid var(--border);
+  border-radius: 0.85rem;
+  height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: #fff;
+  color: var(--text);
+  font: inherit;
+  font-size: 0.96rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.google-btn:hover {
+  border-color: #d4d7de;
+}
+
+.google-btn:focus-visible {
+  outline: 2px solid var(--coral);
+  outline-offset: 2px;
+}
+
+.google-icon {
+  width: 1.15rem;
+  height: 1.15rem;
+}
+
+.login-message {
+  min-height: 1.2rem;
+  margin: 0.85rem 0 0;
+  color: #b04d57;
+  font-size: 0.85rem;
+  font-weight: 600;
+}
+
+@media (max-width: 520px) {
+  .login-card {
+    padding: 1.15rem 0.95rem 1.25rem;
+    border-radius: 1.15rem;
+  }
+
+  .app-logo {
+    width: 4.8rem;
+    height: 4.8rem;
+  }
+}
