@@ -1280,7 +1280,7 @@ h1 .accent {
     display: grid;
     grid-template-columns: 240px minmax(0, 1fr);
     column-gap: 1.25rem;
-    align-content: start;
+    align-items: start;
     padding-left: 1.2rem;
     padding-right: 1.2rem;
   }
@@ -1305,6 +1305,14 @@ h1 .accent {
   .month-strip,
   .board {
     grid-column: 2;
+  }
+
+  .month-strip {
+    align-self: start;
+  }
+
+  .board {
+    align-self: start;
   }
 
   .app.sidebar-collapsed {
