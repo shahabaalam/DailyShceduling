@@ -561,7 +561,10 @@ function wireEvents() {
   document.addEventListener("click", (event) => {
     if (ui.calendarPopover.classList.contains("hidden")) return;
     const insidePopover = ui.calendarPopover.contains(event.target);
-    const onButton = ui.btnCalendar.contains(event.target);
+    const onButton =
+      ui.btnCalendar.contains(event.target) ||
+      ui.sideCalendar.contains(event.target) ||
+      ui.menuCalendar.contains(event.target);
     if (!insidePopover && !onButton) closeCalendarPopover();
   });
 }
